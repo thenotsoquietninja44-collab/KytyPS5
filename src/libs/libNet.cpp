@@ -83,6 +83,26 @@ int KYTY_SYSV_ABI NetBind(int s, const void* addr, uint32_t addrlen) {
 	return FinishSocketCall(Net::Bind(s, addr, addrlen));
 }
 
+int KYTY_SYSV_ABI NetConnect(int s, const void* addr, uint32_t addrlen) {
+	return FinishSocketCall(Net::Connect(s, addr, addrlen));
+}
+
+int KYTY_SYSV_ABI NetGetsockopt(int s, int level, int optname, void* optval, uint32_t* optlen) {
+	return FinishSocketCall(Net::Getsockopt(s, level, optname, optval, optlen));
+}
+
+int KYTY_SYSV_ABI NetSendto(int s, const void* buf, size_t len, int flags,
+                          const void* addr, uint32_t addrlen) {
+	const auto size = std::min<size_t>(len, std::numeric_limits<int>::max());
+	return FinishSocketCall(static_cast<int>(Net::Sendto(s, buf, size, flags | 0x20000, addr, addrlen)));
+}
+
+int KYTY_SYSV_ABI NetRecvfrom(int s, void* buf, size_t len, int flags,
+                            void* addr, uint32_t* addrlen) {
+	const auto size = std::min<size_t>(len, std::numeric_limits<int>::max());
+	return FinishSocketCall(static_cast<int>(Net::Recvfrom(s, buf, size, flags, addr, addrlen)));
+}
+
 int KYTY_SYSV_ABI NetListen(int s, int backlog) {
 	return FinishSocketCall(Net::Listen(s, backlog));
 }
@@ -203,6 +223,10 @@ LIB_DEFINE(InitNet_1_Net) {
 	LIB_FUNC("HQOwnfMGipQ", LibNet::GetNetErrorAddr);
 	LIB_FUNC("PIWqhn9oSxc", LibNet::NetAccept);
 	LIB_FUNC("bErx49PgxyY", LibNet::NetBind);
+	LIB_FUNC("OXXX4mUk3uk", LibNet::NetConnect);
+	LIB_FUNC("xphrZusl78E", LibNet::NetGetsockopt);
+	LIB_FUNC("gvD1greCu0A", LibNet::NetSendto);
+	LIB_FUNC("304ooNZxWDY", LibNet::NetRecvfrom);
 	LIB_FUNC("dgJBaeJnGpo", LibNet::NetPoolCreate);
 	LIB_FUNC("K7RlrTkI-mw", LibNet::NetPoolDestroy);
 	LIB_FUNC("C4UgDHHPvdw", LibNet::NetResolverCreate);

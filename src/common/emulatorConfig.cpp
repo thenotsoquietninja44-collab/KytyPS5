@@ -156,6 +156,10 @@ bool TessellationEnabled() {
 	return g_config->tessellation_enabled;
 }
 
+const std::vector<std::string>& GetGuestArguments() {
+	return g_config->guest_arguments;
+}
+
 bool PlayGoHackEnabled() {
 	return g_config->playgo_hack_enabled;
 }
